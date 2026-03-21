@@ -7,7 +7,7 @@ import PackageDescription
 let remoXCFramework = Target.binaryTarget(
     name: "CRemo",
     url: "https://github.com/yi-jiang-applovin/Remo/releases/download/v0.1.0/RemoSDK.xcframework.zip",
-    checksum: "PLACEHOLDER"
+    checksum: "97ab57b02cdf0427b5f170abd5273f2ebf330a5f8453f92a8f0527a16ec25517"
 )
 
 let package = Package(
