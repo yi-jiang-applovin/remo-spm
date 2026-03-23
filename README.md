@@ -15,7 +15,7 @@ This repo provides Swift Package Manager support for [Remo](https://github.com/y
 Or add the following dependency to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/yi-jiang-applovin/remo-spm.git", from: "0.3.0")
+.package(url: "https://github.com/yi-jiang-applovin/remo-spm.git", from: "0.4.0")
 ```
 
 Then add it to your target:
@@ -29,7 +29,7 @@ dependencies: [
 ### CocoaPods
 
 ```ruby
-pod 'RemoSwift', '~> 0.3.0'
+pod 'Remo', '~> 0.4.0'
 ```
 
 ## Why a separate repo?

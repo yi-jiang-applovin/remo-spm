@@ -1,24 +1,19 @@
-// swift-tools-version: 6.1
-
+// swift-tools-version: 5.9
 import PackageDescription
-
-/// Precompiled XCFramework of the Remo SDK (Rust static library).
-/// Built from https://github.com/yi-jiang-applovin/Remo
-let remoXCFramework = Target.binaryTarget(
-    name: "CRemo",
-    url: "https://github.com/yi-jiang-applovin/Remo/releases/download/v0.3.0/RemoSDK.xcframework.zip",
-    checksum: "7e93447937b19d7428dc2a8faf665edff09594d643a832f09812d413e92ed36a"
-)
 
 let package = Package(
     name: "RemoSwift",
-    platforms: [.iOS(.v15)],
+    platforms: [.iOS(.v13)],
     products: [
-        .library(name: "RemoSwift", targets: ["RemoSwift", "_RemoStub"]),
+        .library(name: "RemoSwift", targets: ["RemoSwift"]),
+        .library(name: "RemoObjC", targets: ["RemoObjC"]),
     ],
     targets: [
-        remoXCFramework,
-
+        // The Rust static library packaged as an XCFramework.
+        .binaryTarget(name: "CRemo", url: "https://github.com/yi-jiang-applovin/Remo/releases/download/v0.4.0/RemoSDK.xcframework.zip", checksum: "ebc42e3e25853229345379a52a668de8728a1358eeedf84212a6760e12f3aab4"),
+        // CRemo is imported only in DEBUG builds (#if DEBUG in Remo.swift).
+        // SPM still requires the binary for dependency resolution,
+        // but unreferenced symbols are stripped by the linker in Release.
         .target(
             name: "RemoSwift",
             dependencies: ["CRemo"],
@@ -26,19 +21,23 @@ let package = Package(
             linkerSettings: [
                 .linkedLibrary("c++"),
                 .linkedFramework("Security"),
+                .linkedFramework("CoreMedia"),
+                .linkedFramework("VideoToolbox"),
+                .linkedFramework("CoreFoundation"),
             ]
         ),
-
-        // Without at least one regular (non-binary) target, Xcode doesn't show the
-        // package in "Frameworks, Libraries, and Embedded Content", which prevents
-        // it from being embedded in the app product.
-        // https://github.com/apple/swift-package-manager/issues/6069
-        .target(name: "_RemoStub", path: "Sources/_RemoStub"),
-
-        .testTarget(
-            name: "RemoSwiftTests",
-            dependencies: ["RemoSwift"],
-            path: "Tests/RemoSwiftTests"
+        .target(
+            name: "RemoObjC",
+            dependencies: ["CRemo"],
+            path: "Sources/RemoObjC",
+            publicHeadersPath: "include",
+            linkerSettings: [
+                .linkedLibrary("c++"),
+                .linkedFramework("Security"),
+                .linkedFramework("CoreMedia"),
+                .linkedFramework("VideoToolbox"),
+                .linkedFramework("CoreFoundation"),
+            ]
         ),
     ]
 )
