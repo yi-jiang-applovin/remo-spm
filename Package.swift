@@ -10,7 +10,7 @@ let package = Package(
     ],
     targets: [
         // The Rust static library packaged as an XCFramework.
-        .binaryTarget(name: "CRemo", url: "https://github.com/yjmeqt/Remo/releases/download/v0.4.1/RemoSDK.xcframework.zip", checksum: "b0a58fec31f25eda14cb63e524aa5c6758252002b1903cbfb59ff1312c293142"),
+        .binaryTarget(name: "CRemo", url: "https://github.com/yjmeqt/Remo/releases/download/v0.4.2/RemoSDK.xcframework.zip", checksum: "fefca14a89b610382aca6f007c2f2c5c0b2486967f88a2e6722f7e9f65d361e3"),
         // CRemo is imported only in DEBUG builds (#if DEBUG in Remo.swift).
         // SPM still requires the binary for dependency resolution,
         // but unreferenced symbols are stripped by the linker in Release.
